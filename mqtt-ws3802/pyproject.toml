@@ -1,0 +1,14 @@
+[project]
+name = "mqtt-ws3802"
+version = "0.1.0"
+description = "MQTT Ecowitt WS3802 weather station logger to PostgreSQL"
+requires-python = ">=3.8"
+dependencies = [
+    "paho-mqtt>=2.1.0",
+    "psycopg2-binary>=2.9.0",
+    "loguru>=0.7.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
