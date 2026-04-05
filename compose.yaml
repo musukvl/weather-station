@@ -12,6 +12,7 @@ services:
       - mosquitto-log:/mosquitto/log
     networks:
       - ws-network
+      - homelab-network
 
   postgresql:
     image: postgres:18-alpine
@@ -30,6 +31,7 @@ services:
       - ./config/postgresql:/docker-entrypoint-initdb.d
     networks:
       - ws-network
+      - homelab-network
 
   mqtt-ws3802:
     build: ./mqtt-ws3802
@@ -37,11 +39,11 @@ services:
     restart: unless-stopped
     user: "1000:1000"
     environment:
-      - MQTT_BROKER=mosquitto
+      - MQTT_BROKER=ws-mosquitto
       - MQTT_PORT=1883
       - MQTT_CLIENT_ID=mqtt_ws3802_logger
       - MQTT_TOPIC_PREFIX=ecowitt/#
-      - DB_HOST=postgresql
+      - DB_HOST=ws-postgresql
       - DB_PORT=5432
       - DB_NAME=${WS_DB_NAME:-weather}
       - DB_USER=${WS_DB_USER:-weather_user}
@@ -49,6 +51,7 @@ services:
       - LOG_LEVEL=INFO
     networks:
       - ws-network
+      - homelab-network
     depends_on:
       - mosquitto
       - postgresql
@@ -61,3 +64,6 @@ volumes:
 networks:
   ws-network:
     driver: bridge
+  homelab-network:
+    external: true
+    name: homelab-network
